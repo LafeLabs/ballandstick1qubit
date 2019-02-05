@@ -1,0 +1,201 @@
+<a href = "editor.php" id = "editorphplink">editor.php</a>
+<h1 id = "toptitle">Ball and Stick Model of 1 Qubit Hilbert Space(Bloch Sphere)</h1>
+<table id = "rectangulartable">
+    <tr style = "color:red;">
+        <td>
+           <input/>$+$ <input/> $i\left|0\right>$
+        </td>
+    </tr>
+    <tr  style = "color:blue;">
+        <td>
+           <input/>$+$ <input/> $i\left|1\right>$
+        </td>
+    </tr>
+</table>
+
+
+<table id = "polartable">
+    <tr>
+        <td>
+           $\theta$: <input/>
+        </td>
+    </tr>
+    <tr>
+        <td>
+           $\phi$:<input/>
+        </td>
+    </tr>
+</table>
+
+
+
+<div id = "x3dbox">
+    <x3d id = "mainx3d">
+        <scene id = "main">
+        </scene>
+    </x3d>
+</div>
+
+
+<script>
+init();
+function init(){
+
+    rectangularinputs = document.getElementById("rectangulartable").getElementsByTagName("input");
+    polarinputs = document.getElementById("polartable").getElementsByTagName("input");
+
+    real0 = 1;
+    imag0 = 0;
+    real1 = 0;
+    imag1 = 0;
+
+    theta0 = 0;
+    phi0 = 0;
+
+    epsilon = 0.001;
+    main = document.getElementById("main");
+
+    ballSize = 1;
+    stepSize = 2;
+
+    redraw();
+}
+
+function redraw(){
+    rectangularinputs[0].value = real0;
+    rectangularinputs[1].value = imag0;
+    rectangularinputs[2].value = real1;
+    rectangularinputs[3].value = imag1;
+
+
+    polarinputs[0].value = theta0;
+    polarinputs[1].value = phi0;
+
+    x = 0;
+    y = 0;
+    z = 0;
+    theta = theta0;
+    phi = 0;
+    solidColor = "red";
+    side3d = 1;//mag0;
+    drawBall();
+
+    x += 1*Math.sin(theta0);
+    y += 1*Math.sin(theta0);
+    z += 1*Math.cos(theta0);
+    solidColor = "black";
+    side3d = 1;//mag1 + 0.2;
+    drawStick();
+
+    x += 1*Math.sin(theta0);
+    y += 1*Math.sin(theta0);
+    z += 1*Math.cos(theta0);
+    solidColor = "blue";
+    side3d = 1;//mag1 + 0.2;
+    drawBall();
+
+}
+    
+function drawBall(){
+    var news = document.createElement("shape");
+    var newt = document.createElement("transform");
+    main.appendChild(newt);
+    newt.setAttribute("translation",z.toString() + " " + x.toString() + " " + y.toString() );
+    var newt2 = document.createElement("transform");
+    newt.appendChild(newt2);
+    newt2.setAttribute("scale",(0.5*side3d).toString() + " " + (0.5*side3d).toString() + " " + (0.5*side3d).toString());
+    newt2.appendChild(news);
+    var newa = document.createElement("appearance");
+    news.appendChild(newa);
+    var newm = document.createElement("material");
+    newm.setAttribute("diffuseColor",solidColor);
+    newa.appendChild(newm);
+    var newb = document.createElement("sphere");
+    news.appendChild(newb);
+}    
+    
+function drawStick(){
+    var news = document.createElement("shape");
+    var newt = document.createElement("transform");
+
+    main.appendChild(newt);
+    newt.setAttribute("translation",z.toString() + " " + x.toString() + " " + y.toString() );
+    var newt2 = document.createElement("transform");
+    
+    newt2.setAttribute("scale",(0.1).toString() + " " + (1).toString() + " " + (0.1).toString());
+    var newt3 = document.createElement("transform");
+    
+    newt3.setAttribute("rotation","0 0 1 1.570796");
+
+    newt.appendChild(newt3);
+    newt3.appendChild(newt2);
+    newt2.appendChild(news);
+
+    var newa = document.createElement("appearance");
+    news.appendChild(newa);
+    var newm = document.createElement("material");
+    newm.setAttribute("diffuseColor",solidColor);
+    newa.appendChild(newm);
+    var newb = document.createElement("cylinder");
+    news.appendChild(newb);
+}
+
+</script>
+
+<style>
+
+#x3dbox{
+    position:absolute;
+    left:100px;
+    right:100px;
+    top:400px;
+    bottom:10px;
+    z-index:-1;
+}
+
+#mainx3d{
+    position:absolute;
+    left:0px;
+    right:0px;
+    bottom:0px;
+    top:0px;
+}
+
+    table{
+        font-size:36px;
+    }
+    #hyperspheretable{
+        position:absolute;
+        right:50px;
+        top:100px;
+    }
+    #polartable{
+        position:absolute;
+        left:300px;
+        top:100px;
+    }
+    #rectangulartable{
+        position:absolute;
+        left:10px;
+        top:100px;
+    }
+    td input{
+        width:1em;
+        border:solid;
+        border-width:4px;
+    }
+    #editorphplink{
+        display:block;
+        position:absolute;
+        left:0px;
+        top:0px;
+    }
+    #toptitle{
+        position:absolute;
+        z-index:-1;
+        top:0px;
+        left:0px;
+        right:0px;
+        text-align:center;
+    }
+</style>
