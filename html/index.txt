@@ -27,7 +27,7 @@
     </tr>
 </table>
 
-
+<div id = "gobutton" class = "button"></div>
 
 <div id = "x3dbox">
     <x3d id = "mainx3d">
@@ -128,18 +128,23 @@ function drawBall(){
 function drawStick(){
     var news = document.createElement("shape");
     var newt = document.createElement("transform");
-
     main.appendChild(newt);
+
+
     newt.setAttribute("translation",y.toString() + " " + z.toString() + " " + x.toString() );
     var newt2 = document.createElement("transform");
     
     newt2.setAttribute("scale",(0.1).toString() + " " + (1).toString() + " " + (0.1).toString());
-    var newt3 = document.createElement("transform");
-    
-//    newt3.setAttribute("rotation","0 0 1 1.570796");
 
+    var newt3 = document.createElement("transform");
+    newt3.setAttribute("rotation","0 0 1 " + theta0.toString());
+
+    var newt4 = document.createElement("transform");
+    newt4.setAttribute("rotation","1 0 0 " + phi0.toString());
+//still need to add this to the stack
     newt.appendChild(newt3);
-    newt3.appendChild(newt2);
+    newt3.appendChild(newt4);
+    newt4.appendChild(newt2);
     newt2.appendChild(news);
 
     var newa = document.createElement("appearance");
@@ -158,6 +163,24 @@ polarinputs[0].onchange = function(){
 
 polarinputs[1].onchange = function(){
     redraw();
+}
+
+
+
+frametime = 1;
+
+document.getElementById("gobutton").onclick = function(){
+    id = setInterval(frame, frametime);    
+    frameindex = 0;
+    polarinputs[0].value = (Math.PI/2).toString();
+    function frame(){
+        polarinputs[1].value = (Math.PI*frameindex/20).toString();
+        redraw();
+        frameindex++;
+        if(frameindex>200){
+            clearInterval(id);
+        }
+    }
 }
 
 </script>
@@ -218,4 +241,31 @@ polarinputs[1].onchange = function(){
         right:0px;
         text-align:center;
     }
+    
+    #gobutton{
+        background-color:green;
+        position:absolute;
+        right:4em;
+        top:4em;
+        z-index:10;
+    }
+    .button{
+        cursor:pointer;
+        width:30px;
+        height:30px;
+        border-radius:15px;
+        border:solid;
+        border-width:1px;
+        background-color:green;
+    }
+    .button:hover{
+        border:solid;
+        border-width:3px;
+    }
+    .button:active{
+        border-color:yellow;
+        border:solid;
+        border-width:5px;
+    }
+
 </style>
