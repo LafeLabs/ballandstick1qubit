@@ -58,10 +58,9 @@ function init(){
     ballSize = 1;
     stepSize = 2;
 
-    redraw();
-}
+    zhat = [0,0,1];
+    xhat = [1,0,0];
 
-function redraw(){
     rectangularinputs[0].value = real0;
     rectangularinputs[1].value = imag0;
     rectangularinputs[2].value = real1;
@@ -70,26 +69,38 @@ function redraw(){
 
     polarinputs[0].value = theta0;
     polarinputs[1].value = phi0;
+    theta = theta0;
+    phi = phi0;
+    
+    redraw();
+}
+
+function redraw(){
+    main.innerHTML = "";
+    theta0 = polarinputs[0].value;
+    phi0 = polarinputs[1].value;
 
     x = 0;
     y = 0;
     z = 0;
-    theta = theta0;
-    phi = 0;
+    zhat = [0,0,1];
+    xhat = [1,0,0];
     solidColor = "red";
     side3d = 1;//mag0;
     drawBall();
 
-    x += 1*Math.sin(theta0);
-    y += 1*Math.sin(theta0);
-    z += 1*Math.cos(theta0);
+    zhat = [Math.sin(theta0)*Math.sin(phi0),-Math.sin(theta0)*Math.cos(phi0),Math.cos(theta0)];
+    
+    x += zhat[0];
+    y += zhat[1];
+    z += zhat[2];
     solidColor = "black";
     side3d = 1;//mag1 + 0.2;
     drawStick();
 
-    x += 1*Math.sin(theta0);
-    y += 1*Math.sin(theta0);
-    z += 1*Math.cos(theta0);
+    x += zhat[0];
+    y += zhat[1];
+    z += zhat[2];
     solidColor = "blue";
     side3d = 1;//mag1 + 0.2;
     drawBall();
@@ -100,7 +111,7 @@ function drawBall(){
     var news = document.createElement("shape");
     var newt = document.createElement("transform");
     main.appendChild(newt);
-    newt.setAttribute("translation",z.toString() + " " + x.toString() + " " + y.toString() );
+    newt.setAttribute("translation",y.toString() + " " + z.toString() + " " + x.toString() );
     var newt2 = document.createElement("transform");
     newt.appendChild(newt2);
     newt2.setAttribute("scale",(0.5*side3d).toString() + " " + (0.5*side3d).toString() + " " + (0.5*side3d).toString());
@@ -119,13 +130,13 @@ function drawStick(){
     var newt = document.createElement("transform");
 
     main.appendChild(newt);
-    newt.setAttribute("translation",z.toString() + " " + x.toString() + " " + y.toString() );
+    newt.setAttribute("translation",y.toString() + " " + z.toString() + " " + x.toString() );
     var newt2 = document.createElement("transform");
     
     newt2.setAttribute("scale",(0.1).toString() + " " + (1).toString() + " " + (0.1).toString());
     var newt3 = document.createElement("transform");
     
-    newt3.setAttribute("rotation","0 0 1 1.570796");
+//    newt3.setAttribute("rotation","0 0 1 1.570796");
 
     newt.appendChild(newt3);
     newt3.appendChild(newt2);
@@ -138,6 +149,15 @@ function drawStick(){
     newa.appendChild(newm);
     var newb = document.createElement("cylinder");
     news.appendChild(newb);
+}
+
+
+polarinputs[0].onchange = function(){
+    redraw();
+}
+
+polarinputs[1].onchange = function(){
+    redraw();
 }
 
 </script>
