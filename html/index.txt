@@ -49,7 +49,7 @@ function init(){
     real1 = 0;
     imag1 = 0;
 
-    theta0 = 0;
+    theta0 = 0.3;
     phi0 = 0;
 
     epsilon = 0.001;
@@ -96,7 +96,7 @@ function redraw(){
     z += zhat[2];
     solidColor = "black";
     side3d = 1;//mag1 + 0.2;
-    drawStick();
+    //drawStick();
 
     x += zhat[0];
     y += zhat[1];
@@ -170,9 +170,10 @@ polarinputs[1].onchange = function(){
 frametime = 1;
 
 document.getElementById("gobutton").onclick = function(){
+    
     id = setInterval(frame, frametime);    
     frameindex = 0;
-    polarinputs[0].value = (Math.PI/2).toString();
+    //polarinputs[0].value = (Math.PI/2).toString();
     function frame(){
         polarinputs[1].value = (Math.PI*frameindex/20).toString();
         redraw();
